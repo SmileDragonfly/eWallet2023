@@ -2,15 +2,25 @@ package main
 
 import (
 	"eWallet/Banks"
-	"log"
+	"eWallet/Init"
+	_ "eWallet/Init"
+	log "github.com/jeanphorn/log4go"
 )
 
 func main() {
+	// Init log file
+	// load config file, it's optional
+	// or log.LoadConfiguration("./example.json", "json")
+	// config file could be json or xml
+	log.LoadConfiguration("./log4go.json")
+	log.Info("----------Init logger----------")
+	defer log.Close()
+	Init.Init()
 	// Test call
-	log.Println("----------Start eWallet----------")
+	log.Info("----------Start eWallet----------")
 	bank, err := Banks.GetBank("SCB")
 	if err != nil {
-		log.Println("Get bank failed: ", err.Error())
+		log.Info("Get bank failed: ", err.Error())
 	}
 	bank.Link(nil)
 }
