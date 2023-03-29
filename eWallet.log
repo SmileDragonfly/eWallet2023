@@ -1,8 +1,18 @@
-[2023/03/28 17:18:04 +07] [DEFAULT] [INFO] (eWallet/AAA.init.0:11) ----------Init logger----------
-[2023/03/28 17:35:54 +07] [DEFAULT] [INFO] (eWallet/AAA.init.0:21) ----------Init logger----------
-[2023/03/28 17:37:22 +07] [DEFAULT] [INFO] (eWallet/AAA.init.0:21) ----------Init logger----------
-[2023/03/28 23:26:19 +07] [DEFAULT] [INFO] (eWallet/Init.init.0:19) ----------Start CryptoTrackingAgent----------
-[2023/03/28 23:36:32 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
-[2023/03/28 23:36:32 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:30) Init package successfully: %!(EXTRA string=eWallet/Init, SCB.Config={https://card.sacombank.com.vn/epaygw/stb/ TestUser TestPassword TestSecretKey TestPrivateKey TestPublicKey})
-[2023/03/28 23:36:32 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
-[2023/03/28 23:36:32 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.Link:24) Link%!(EXTRA string=eWallet/Banks/SCB)
+[2023/03/29 12:06:24 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/03/29 12:06:24 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={https://127.0.0.1:9000 TestUser TestPassword TestSecretKey TestPrivateKey TestPublicKey})
+[2023/03/29 12:06:24 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/03/29 12:06:24 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.Link:26) Link
+[2023/03/29 12:06:24 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.SCB.Link:45) Do client request error
+[2023/03/29 12:11:51 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/03/29 12:11:51 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey TestPrivateKey TestPublicKey})
+[2023/03/29 12:11:51 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/03/29 12:11:51 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.Link:26) Link
+[2023/03/29 12:11:51 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.SCB.Link:47) Do client request: %!(EXTRA string=200 OK)
+[2023/03/29 12:11:51 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.TopupByCard:62) TopupByCard
+[2023/03/29 12:11:51 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.TransferToInternalAccount:92) TransferToInternalAccount
+[2023/03/29 12:22:14 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/03/29 12:22:14 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey TestPrivateKey TestPublicKey})
+[2023/03/29 12:22:14 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/03/29 12:22:14 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.Link:50) Link
+[2023/03/29 12:22:14 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.TopupByCard:72) TopupByCard
+[2023/03/29 12:22:14 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.TransferToInternalAccount:102) TransferToInternalAccount

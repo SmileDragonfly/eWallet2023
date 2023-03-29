@@ -23,4 +23,6 @@ func main() {
 		log.Info("Get bank failed: ", err.Error())
 	}
 	bank.Link(nil)
+	bank.TopupByCard(nil)
+	bank.TransferToInternalAccount(nil)
 }
