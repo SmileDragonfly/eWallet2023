@@ -22,7 +22,5 @@ func main() {
 	if err != nil {
 		log.Info("Get bank failed: ", err.Error())
 	}
-	bank.Link(nil)
-	bank.TopupByCard(nil)
-	bank.TransferToInternalAccount(nil)
+	bank.RequestOTP(nil)
 }

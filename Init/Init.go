@@ -15,7 +15,7 @@ func Init() {
 
 func InitSCB() {
 	// Read config file
-	data, err := os.ReadFile("./BankConfigs/SCB.json")
+	data, err := os.ReadFile("./BankConfigs/SCB/SCB.json")
 	if err != nil {
 		log.Info("Init package failed: ", err.Error())
 		return

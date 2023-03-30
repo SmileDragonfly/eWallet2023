@@ -1,0 +1,8 @@
+{
+  "Link": "http://127.0.0.1:9000",
+  "User": "TestUser",
+  "Password": "TestPassword",
+  "SecretKey": "TestSecretKey32Character",
+  "PrivateKey": "./BankConfigs/SCB/PrivateKey.pem",
+  "PublicKey": "./BankConfigs/SCB/PublicKey.pem"
+}

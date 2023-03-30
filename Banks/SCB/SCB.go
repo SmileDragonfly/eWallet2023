@@ -1,10 +1,7 @@
 package SCB
 
 import (
-	"bytes"
-	"encoding/json"
 	log "github.com/jeanphorn/log4go"
-	"net/http"
 )
 
 type SCB struct{}
@@ -23,48 +20,27 @@ type BodyData interface {
 
 var Conf Config
 
-func (r SCB) doRequest(url string, body BodyData) (*http.Response, error) {
-	// Marshal body data
-	bodyBuf, err := json.Marshal(body)
-	if err != nil {
-		log.Error("Marshal body data error", err.Error())
-		return nil, err
-	}
-	bodyReader := bytes.NewReader(bodyBuf)
-	req, err := http.NewRequest("POST", url, bodyReader)
-	if err != nil {
-		log.Error("Create request error", err.Error())
-		return nil, err
-	}
-	// Create header info
-	req.SetBasicAuth(Conf.User, Conf.Password)
-	req.Header.Set("Signature", Conf.PrivateKey)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-	// Send request to server
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Error("Do client request error")
-		return nil, err
-	}
-	return resp, err
-}
-
 func (r SCB) Link(data []byte) ([]byte, error) {
 	log.Info("Link")
-	url := Conf.Link + "/Link"
-	var body RequestOTP
-	resp, err := r.doRequest(url, body)
-	if err != nil {
-		log.Error("Do client request: ", resp.Status)
-		return nil, err
-	}
 	return nil, nil
 }
 
 func (r SCB) RequestOTP(data []byte) ([]byte, error) {
 	log.Info("RequestOTP")
+	url := Conf.Link + "/RequestOTP"
+	var body RequestBody
+	var bodyData DataOTP
+	err := CreateRequestBody("ERequestOTP", bodyData, &body)
+	if err != nil {
+		log.Error("Create request error: ", err.Error())
+		return nil, err
+	}
+	resp, err := DoRequest(url, body)
+	if err != nil {
+		log.Error("Do client request error: ", err.Error())
+		return nil, err
+	}
+	log.Error("Do client request successfully: ", resp.Status)
 	return nil, nil
 }
 
