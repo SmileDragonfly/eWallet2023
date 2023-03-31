@@ -1,7 +1,25 @@
 package SCB
 
 import (
+	"bytes"
+	"crypto"
+	"crypto/md5"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/sha1"
+	"crypto/x509"
+	"eWallet/Utils"
+	"encoding/base64"
+	"encoding/json"
+	"encoding/pem"
+	"errors"
+	"fmt"
+	"github.com/google/uuid"
 	log "github.com/jeanphorn/log4go"
+	"io"
+	"net/http"
+	"os"
+	"time"
 )
 
 type SCB struct{}
@@ -27,10 +45,10 @@ func (r SCB) Link(data []byte) ([]byte, error) {
 
 func (r SCB) RequestOTP(data []byte) ([]byte, error) {
 	log.Info("RequestOTP")
-	url := Conf.Link + "/RequestOTP"
+	url := Conf.Link + "/RequestOTPAcc"
 	var body RequestBody
-	var bodyData DataOTP
-	err := CreateRequestBody("ERequestOTP", bodyData, &body)
+	var bodyData Request_ERequestOTPAcc
+	err := CreateRequestBody("ERequestOTPAcc", bodyData, &body)
 	if err != nil {
 		log.Error("Create request error: ", err.Error())
 		return nil, err
@@ -40,7 +58,34 @@ func (r SCB) RequestOTP(data []byte) ([]byte, error) {
 		log.Error("Do client request error: ", err.Error())
 		return nil, err
 	}
-	log.Error("Do client request successfully: ", resp.Status)
+
+	// Parse response data
+	resBodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Error("Read response body error: ", err.Error())
+		return nil, err
+	}
+	// Unmarshar response
+	var responseBody ResponseBody
+	var responseBodyData Response_ERequestOTPAcc
+	err = json.Unmarshal(resBodyBytes, &responseBody)
+	if err != nil {
+		log.Error("Unmarshal response body error: ", err.Error())
+		return nil, err
+	}
+	// Decrypt data
+	plainData, err := Utils.DecryptTripleDESB64(responseBody.Data, Conf.SecretKey)
+	if err != nil {
+		log.Error("Decrypt response body data error: ", err.Error())
+		return nil, err
+	}
+	// Unmarshal data
+	err = json.Unmarshal([]byte(plainData), &responseBodyData)
+	if err != nil {
+		log.Error("Unmarshal response body data error: ", err.Error())
+		return nil, err
+	}
+	fmt.Printf("Unmarshal response body data success: %+v", responseBodyData)
 	return nil, nil
 }
 
@@ -132,4 +177,111 @@ func (r SCB) CheckCustomerInfo(data []byte) ([]byte, error) {
 func (r SCB) PushNotification(data []byte) ([]byte, error) {
 	log.Info("PushNotification")
 	return nil, nil
+}
+
+func CreateRequestBody(funcName string, reqData RequestData, reqBody *RequestBody) error {
+	// Encrypt request data using secret key
+	reqDataByte, err := json.Marshal(reqData)
+	if err != nil {
+		return err
+	}
+	// Encrypt data
+	sEncryptData, err := Utils.EncryptTripleDESB64(string(reqDataByte), Conf.SecretKey)
+	if err != nil {
+		return err
+	}
+	reqBody.Data = sEncryptData
+	// Assign function name
+	reqBody.FunctionName = funcName
+	// Get current time: yyyy-MM-ddTHH:mm:ssZ
+	now := time.Now()
+	strNow := now.UTC().Format("2006-01-02T15:04:05Z")
+	reqBody.RequestDateTime = strNow
+	// Generate request id: GUID
+	guid := uuid.New()
+	reqBody.RequestID = guid.String()
+	return nil
+}
+
+func DoRequest(url string, body BodyData) (*http.Response, error) {
+	// Marshal body data
+	bodyBuf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader := bytes.NewReader(bodyBuf)
+	req, err := http.NewRequest("POST", url, bodyReader)
+	if err != nil {
+		return nil, err
+	}
+	// Create header info
+	req.SetBasicAuth(Conf.User, Conf.Password)
+	sSignature, err := CreateSignatureDataB64(bodyBuf, Conf.PrivateKey)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Signature", sSignature)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+	// Send request to server
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Error("Do client request error")
+		return nil, err
+	}
+	return resp, err
+}
+
+func CreateSignatureDataB64(src []byte, pathPrivateKey string) (string, error) {
+	bytePrivateKey, err := os.ReadFile(pathPrivateKey)
+	if err != nil {
+		return "", err
+	}
+	// Load private key
+	pemBlock, _ := pem.Decode(bytePrivateKey)
+	if pemBlock == nil || pemBlock.Type != "RSA PRIVATE KEY" {
+		return "", errors.New("Decode pem file failed")
+	}
+	privateKey, err := x509.ParsePKCS1PrivateKey(pemBlock.Bytes)
+	if err != nil {
+		return "", err
+	}
+	// MD5 body data
+	byteMD5 := md5.Sum(src)
+	// SHA1 MD5 data
+	byteSha1 := sha1.Sum(byteMD5[:])
+	// Sign data using private key
+	byteSignedData, err := rsa.SignPKCS1v15(rand.Reader, privateKey, crypto.SHA1, byteSha1[:])
+	if err != nil {
+		return "", nil
+	}
+	return base64.StdEncoding.EncodeToString(byteSignedData), nil
+}
+
+func VerifySignatureB64(sSignature string, src []byte, pathPublicKey string) error {
+	// Decode base64 signature
+	byteSignature, err := base64.StdEncoding.DecodeString(sSignature)
+	if err != nil {
+		return err
+	}
+	// MD5 body data
+	byteMD5 := md5.Sum(src)
+	// SHA1 MD5 data
+	byteSha1 := sha1.Sum(byteMD5[:])
+	// Load public key
+	pubKeyByte, err := os.ReadFile(pathPublicKey)
+	if err != nil {
+		return err
+	}
+	pemBlock, _ := pem.Decode(pubKeyByte)
+	if pemBlock == nil || pemBlock.Type != "PUBLIC KEY" {
+		return err
+	}
+	publicKey, err := x509.ParsePKIXPublicKey(pemBlock.Bytes)
+	if err != nil {
+		return err
+	}
+	rsaPublicKey, _ := publicKey.(*rsa.PublicKey)
+	return rsa.VerifyPKCS1v15(rsaPublicKey, crypto.SHA1, byteSha1[:], byteSignature)
 }

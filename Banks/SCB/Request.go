@@ -1,144 +1,87 @@
 package SCB
 
-import (
-	"bytes"
-	"crypto"
-	"crypto/md5"
-	"crypto/rand"
-	"crypto/rsa"
-	"crypto/sha1"
-	"crypto/x509"
-	"eWallet/Utils"
-	"encoding/base64"
-	"encoding/json"
-	"encoding/pem"
-	"errors"
-	"github.com/google/uuid"
-	log "github.com/jeanphorn/log4go"
-	"net/http"
-	"os"
-	"time"
-)
-
 type RequestData interface {
 }
 
 type RequestBody struct {
-	Data            string `json:"Data"`            // Encrypt Triple des using secret key
-	FunctionName    string `json:"FunctionName"`    // Each api have it own functional name
-	RequestDateTime string `json:"RequestDateTime"` // yyyy-MM-ddTHH:mm:ssZ
-	RequestID       string `json:"RequestID"`       // guid
+	Data            string `json:"Data"`            //1.Encrypt Triple des using secret key
+	FunctionName    string `json:"FunctionName"`    //2.Each api have it own functional name
+	RequestDateTime string `json:"RequestDateTime"` //3.yyyy-MM-ddTHH:mm:ssZ
+	RequestID       string `json:"RequestID"`       //4.Guid
 }
 
-type DataOTP struct {
-	CustomerID     string `json:"CustomerID"`
-	SubscriptionID string `json:"SubscriptionID"`
-	RefNumber      string `json:"RefNumber"`
+// Request OTP: ERequestOTPAcc
+type Request_ERequestOTPAcc struct {
+	CustomerID     string `json:"CustomerID"`     //5.ID khách hàng tại ĐVCNTT
+	SubscriptionID string `json:"SubscriptionID"` //6.Số tài khoản thẻ/token của thẻ/tài khoản đại diện cho số thẻ/tài khoản KH
+	RefNumber      string `json:"RefNumber"`      //7.Số tham chiếu (Tiền tố 2 ký tự đầu STB sẽ quy định cho từng ĐVCNTT)
 }
 
-func CreateRequestBody(funcName string, reqData RequestData, reqBody *RequestBody) error {
-	// Encrypt request data using secret key
-	reqDataByte, err := json.Marshal(reqData)
-	if err != nil {
-		return err
-	}
-	// Encrypt data
-	sEncryptData, err := Utils.EncryptTripleDESB64(string(reqDataByte), Conf.SecretKey)
-	if err != nil {
-		return err
-	}
-	reqBody.Data = sEncryptData
-	// Assign function name
-	reqBody.FunctionName = funcName
-	// Get current time: yyyy-MM-ddTHH:mm:ssZ
-	now := time.Now()
-	strNow := now.UTC().Format("2006-01-02T15:04:05Z")
-	reqBody.RequestDateTime = strNow
-	// Generate request id: GUID
-	guid := uuid.New()
-	reqBody.RequestID = guid.String()
-	return nil
+// Topup transaction: ETopupByAccount
+type Request_ETopupByAccount struct {
+	IsRequiredOTPBySTB bool   `json:"IsRequiredOTPBySTB"` //5.True hoặc False: Gửi lại giá trị đã được Sacombank trả về ở trường IsRequiredOTP bước ERequestOTP tương ứng
+	IsByPassOTP        bool   `json:"IsByPassOTP"`        //6.True: Hệ thống ĐVCNT đánh giá khách hàng là an toàn, không cần xác thực OTP Và trong trường hợp này ĐVCNT chịu hoàn toàn rủi ro, trách nhiệm nếu bị khách hàng khiếu nại. False: Xác thực theo yêu cầu của Sacombank nếu có
+	AuthType           string `json:"AuthType"`           //7.Hình thức xác thực của khách hàng: Gửi lại giá trị đã được Sacombank trả về ở trường AuthType bước ERequestOTP tương ứng: - 1: SMS OTP - 2: HardToken - 3: mCode - 4: mConnected - 5: AdvToken Nếu IsByPassOTP = True thì AuthType =””
+	OTP                string `json:"OTP"`                //8.Mã OTP nếu có. Nếu IsByPassOTP = True thì OTP =””
+	CustomerID         string `json:"CustomerID"`         //9.ID khách hàng tại ĐVCNTT
+	SubscriptionID     string `json:"SubscriptionID"`     //10.Số tài khoản thẻ/token của thẻ/tài khoản đại diện cho số thẻ/tài khoản KH
+	Amount             string `json:"Amount"`             //11.Số tiền giao dịch
+	Description        string `json:"Description"`        //12.Diễn giải Format: [CIA Diễn giải của ĐVCNTT]
+	RefNumber          string `json:"RefNumber"`          //13.Số tham chiếu (Tiền tố 2 ký tự đầu STB sẽ quy định cho từng ĐVCNTT)
+	InqRefNumber       string `json:"InqRefNumber"`       //14.Số tham chiếu của giao dịch ERequestOTP tương ứng trước đó
 }
 
-func DoRequest(url string, body BodyData) (*http.Response, error) {
-	// Marshal body data
-	bodyBuf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader := bytes.NewReader(bodyBuf)
-	req, err := http.NewRequest("POST", url, bodyReader)
-	if err != nil {
-		return nil, err
-	}
-	// Create header info
-	req.SetBasicAuth(Conf.User, Conf.Password)
-	sSignature, err := CreateSignatureDataB64(bodyBuf, Conf.PrivateKey)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Signature", sSignature)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-	// Send request to server
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Error("Do client request error")
-		return nil, err
-	}
-	return resp, err
+// Purchase transaction: EPurchaseByAccount
+type Request_EPurchaseByAccount struct {
+	IsRequiredOTPBySTB bool   `json:"IsRequiredOTPBySTB"` //5.True hoặc False: Gửi lại giá trị đã được Sacombank trả về ở trường IsRequiredOTP bước ERequestOTP tương ứng
+	IsByPassOTP        bool   `json:"IsByPassOTP"`        //6.True: Hệ thống ĐVCNT đánh giá khách hàng là an toàn, không cần xác thực OTP Và trong trường hợp này ĐVCNT chịu hoàn toàn rủi ro, trách nhiệm nếu bị khách hàng khiếu nại. False: Xác thực theo yêu cầu của Sacombank nếu có
+	AuthType           string `json:"AuthType"`           //7.Hình thức xác thực của khách hàng: Gửi lại giá trị đã được Sacombank trả về ở trường AuthType bước ERequestOTP tương ứng: - 1: SMS OTP - 2: HardToken - 3: mCode - 4: mConnected - 5: AdvToken Nếu IsByPassOTP = True thì AuthType =””
+	OTP                string `json:"OTP"`                //8.Mã OTP nếu có. Nếu IsByPassOTP = True thì OTP =””
+	CustomerID         string `json:"CustomerID"`         //9.ID khách hàng tại ĐVCNTT
+	SubscriptionID     string `json:"SubscriptionID"`     //10.Số tài khoản thẻ/token của thẻ/tài khoản đại diện cho số thẻ/tài khoản KH
+	Amount             string `json:"Amount"`             //11.Số tiền giao dịch
+	Description        string `json:"Description"`        //12.Diễn giải Format: [CIA Diễn giải của ĐVCNTT]
+	RefNumber          string `json:"RefNumber"`          //13.Số tham chiếu (Tiền tố 2 ký tự đầu STB sẽ quy định cho từng ĐVCNTT)
+	InqRefNumber       string `json:"InqRefNumber"`       //14.Số tham chiếu của giao dịch ERequestOTP tương ứng trước đó
 }
 
-func CreateSignatureDataB64(src []byte, pathPrivateKey string) (string, error) {
-	bytePrivateKey, err := os.ReadFile(pathPrivateKey)
-	if err != nil {
-		return "", err
-	}
-	// Load private key
-	pemBlock, _ := pem.Decode(bytePrivateKey)
-	if pemBlock == nil || pemBlock.Type != "RSA PRIVATE KEY" {
-		return "", errors.New("Decode pem file failed")
-	}
-	privateKey, err := x509.ParsePKCS1PrivateKey(pemBlock.Bytes)
-	if err != nil {
-		return "", err
-	}
-	// MD5 body data
-	byteMD5 := md5.Sum(src)
-	// SHA1 MD5 data
-	byteSha1 := sha1.Sum(byteMD5[:])
-	// Sign data using private key
-	byteSignedData, err := rsa.SignPKCS1v15(rand.Reader, privateKey, crypto.SHA1, byteSha1[:])
-	if err != nil {
-		return "", nil
-	}
-	return base64.StdEncoding.EncodeToString(byteSignedData), nil
+// Withdraw transaction
+// Inquiry: ESubscriptionInquiry
+// Cashout: ECashoutSubscription
+type Request_ESubscriptionInquiry struct {
+	CustomerID     string `json:"CustomerID"`     //5.ID khách hàng tại ĐVCNTT
+	SubscriptionID string `json:"SubscriptionID"` //6.Số tài khoản thẻ/token của thẻ/tài khoản đại diện cho số thẻ/tài khoản KH
+	RefNumber      string `json:"RefNumber"`      //7.Số tham chiếu (Tiền tố 2 ký tự đầu STB sẽ quy định cho từng ĐVCNTT)
+}
+type Request_ECashoutSubscription struct {
+	SubscriptionID string `json:"SubscriptionID"` //5.Số tài khoản thẻ/token của thẻ/tài khoản đại diện cho số thẻ/tài khoản KH
+	CustomerID     string `json:"CustomerID"`     //6.ID khách hàng tại ĐVCNTT
+	Amount         string `json:"Amount"`         //7.Số tiền thực hiện giao dịch
+	RefNumber      string `json:"RefNumber"`      //8.Số tham chiếu (Tiền tố 2 ký tự đầu STB sẽ quy định cho từng ĐVCNTT)
+	Description    string `json:"Description"`    //9.Diễn giải Thẻ: Fomat: [COC Diễn giải của ĐVCNTT] Tài khoản: Fomat: [COA Diễn giải của ĐVCNTT]
+	SenderName     string `json:"SenderName"`     //10.Tên khách hàng thực hiện chuyển tiền
 }
 
-func VerifySignatureB64(sSignature string, src []byte, pathPublicKey string) error {
-	// Decode base64 signature
-	byteSignature, err := base64.StdEncoding.DecodeString(sSignature)
-	if err != nil {
-		return err
-	}
-	// MD5 body data
-	byteMD5 := md5.Sum(src)
-	// SHA1 MD5 data
-	byteSha1 := sha1.Sum(byteMD5[:])
-	// Load public key
-	pubKeyByte, err := os.ReadFile(pathPublicKey)
-	if err != nil {
-		return err
-	}
-	pemBlock, _ := pem.Decode(pubKeyByte)
-	if pemBlock == nil || pemBlock.Type != "PUBLIC KEY" {
-		return err
-	}
-	publicKey, err := x509.ParsePKIXPublicKey(pemBlock.Bytes)
-	if err != nil {
-		return err
-	}
-	rsaPublicKey, _ := publicKey.(*rsa.PublicKey)
-	return rsa.VerifyPKCS1v15(rsaPublicKey, crypto.SHA1, byteSha1[:], byteSignature)
+// Transfer to an account
+// Inquery: ESTBAccountInquiry
+// Transfer: EFundTransferToSTBAccount
+type Request_ESTBAccountInquiry struct {
+	ToSTBAccountNo string `json:"ToSTBAccountNo"` //5.Tài khoản STB nhận (nếu tài khoản chưa liên kết). ĐVCNTT không được phép lưu trữ full số tài khoản
+	RefNumber      string `json:"RefNumber"`      //6.Số tham chiếu (Tiền tố 2 ký tự đầu STB sẽ quy định cho từng ĐVCNTT)
+}
+
+type Request_EFundTransferToSTBAccount struct {
+	AccountNo    string `json:"AccountNo"`    //5.Tài khoản STB nhận (nếu tài khoản chưa liên kết). ĐVCNTT không được phép lưu trữ full số tài khoản
+	Amount       string `json:"Amount"`       //6.Số tiền
+	Description  string `json:"Description"`  //7.Diễn giải Fomat: [ISA Diễn giải của ĐVCNTT]
+	RefNumber    string `json:"RefNumber"`    //8.Số tham chiếu (Tiền tố 2 ký tự đầu STB sẽ quy định cho từng ĐVCNTT)
+	InqRefNumber string `json:"InqRefNumber"` //9.Số tham chiếu của giao dịch ESTBCardInquiry trước đó
+	SenderName   string `json:"SenderName"`   //10.Tên khách hàng thực hiện chuyển tiền
+}
+
+// Cancel Link: ECancelSubscription
+type Request_ECancelSubscription struct {
+	CustomerID     string `json:"CustomerID"`     //5.ID khách hàng tại ĐVCNTT
+	SubscriptionID string `json:"SubscriptionID"` //6.Số tài khoản thẻ/token của thẻ/tài khoản đại diện cho số thẻ/tài khoản KH
+	RefNumber      string `json:"RefNumber"`      //7.Số tham chiếu (Tiền tố 2 ký tự đầu STB sẽ quy định cho từng ĐVCNTT)
 }
