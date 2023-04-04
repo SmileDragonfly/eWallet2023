@@ -38,8 +38,19 @@ type BodyData interface {
 
 var Conf Config
 
+func (r SCB) AuthorizationToken(data []byte) ([]byte, error) {
+	log.Info("AuthorizationToken")
+	return nil, nil
+}
+
 func (r SCB) Link(data []byte) ([]byte, error) {
 	log.Info("Link")
+	return nil, nil
+}
+
+func (r SCB) LinkConfirm(data []byte) ([]byte, error) {
+	log.Info("LinkConfirm")
+
 	return nil, nil
 }
 

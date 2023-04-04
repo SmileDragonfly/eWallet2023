@@ -18,9 +18,9 @@ func main() {
 	Init.Init()
 	// Test call
 	log.Info("----------Start eWallet----------")
-	bank, err := Banks.GetBank("SCB")
+	bank, err := Banks.GetBank("MB")
 	if err != nil {
 		log.Info("Get bank failed: ", err.Error())
 	}
-	bank.RequestOTP(nil)
+	bank.Link(nil)
 }

@@ -1,40 +1,64 @@
-[2023/03/31 17:32:54 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
-[2023/03/31 17:32:54 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
-[2023/03/31 17:32:54 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
-[2023/03/31 17:32:54 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.RequestOTP:45) RequestOTP
-[2023/03/31 17:32:54 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.SCB.RequestOTP:59) Do client request successfully: %!(EXTRA string=200 OK)
-[2023/03/31 17:36:34 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
-[2023/03/31 17:36:34 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
-[2023/03/31 17:36:34 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
-[2023/03/31 17:36:34 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.RequestOTP:46) RequestOTP
-[2023/03/31 17:36:34 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.SCB.RequestOTP:65) Do client request successfully: %!(EXTRA string={"FunctionName":"ERequestOTPAcc","RequestDateTime":"2023-03-31T10:36:34Z","RequestID":"ce854441-314b-45cd-b3f3-964ed0d6bd3d","Description":"This is the test format structure","RespCode":"00","Data":"{\"IsRequiredOTP\":true,\"AuthInfo\":{\"IsRequiredOTP\":false,\"AuthDesVN\":\"\",\"AuthDesEN\":\"\",\"AuthDesTimeoutVN\":\"\",\"AuthDesTimeoutEN\":\"\",\"RefNumber\":\"\"}}"})
-[2023/03/31 17:41:12 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
-[2023/03/31 17:41:12 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
-[2023/03/31 17:41:12 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
-[2023/03/31 17:41:12 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.RequestOTP:46) RequestOTP
-[2023/03/31 17:41:12 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.SCB.RequestOTP:65) Do client request successfully: %!(EXTRA string={"FunctionName":"ERequestOTPAcc","RequestDateTime":"2023-03-31T10:41:12Z","RequestID":"4d9ccc2a-25a7-4e4c-83ac-f04a4f4ee11c","Description":"This is the test format structure","RespCode":"00","Data":"1xCsQ6vtofXx3TeBoYtdxAoeqH1mh88b6WaSDschYvj4UYpybiMjGgZgFjQdio4mCYLDc44n4lNJDFCz4vbr+b3t7A/1O7VHMK6VP6HxuTeOUNYuOPJJcLFq15Nldpc/bRdP7Jxf5gXwkcUKfnikC6Q00YfLJxkRucs8X7Amq1qY7YYF97UbpBEcpxDsGQHPUzzrgyjtdL8="})
-[2023/03/31 17:50:08 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
-[2023/03/31 17:50:08 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
-[2023/03/31 17:50:08 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
-[2023/03/31 17:50:08 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.RequestOTP:46) RequestOTP
-[2023/03/31 17:50:08 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.SCB.RequestOTP:72) Unmarshal response body error: %!(EXTRA string=json: Unmarshal(non-pointer SCB.ResponseBody))
-[2023/03/31 17:50:33 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
-[2023/03/31 17:50:33 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
-[2023/03/31 17:50:33 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
-[2023/03/31 17:50:33 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.RequestOTP:46) RequestOTP
-[2023/03/31 17:50:33 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.SCB.RequestOTP:87) Unmarshal response body data success: %!(EXTRA SCB.Request_ERequestOTPAcc={  })
-[2023/03/31 17:52:22 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
-[2023/03/31 17:52:22 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
-[2023/03/31 17:52:22 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
-[2023/03/31 17:52:22 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.RequestOTP:46) RequestOTP
-[2023/03/31 17:52:24 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.DoRequest:229) Do client request error
-[2023/03/31 17:52:24 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.SCB.RequestOTP:57) Do client request error: %!(EXTRA string=Post "http://127.0.0.1:9000/RequestOTPAcc": dial tcp 127.0.0.1:9000: connectex: No connection could be made because the target machine actively refused it.)
-[2023/03/31 17:52:38 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
-[2023/03/31 17:52:38 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
-[2023/03/31 17:52:38 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
-[2023/03/31 17:52:38 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.RequestOTP:46) RequestOTP
-[2023/03/31 17:52:38 +07] [DEFAULT] [EROR] (eWallet/Banks/SCB.SCB.RequestOTP:87) Unmarshal response body data success: %!(EXTRA SCB.Response_ERequestOTPAcc={true {false     }})
-[2023/03/31 17:54:44 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
-[2023/03/31 17:54:44 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:29) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
-[2023/03/31 17:54:44 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
-[2023/03/31 17:54:44 +07] [DEFAULT] [INFO] (eWallet/Banks/SCB.SCB.RequestOTP:47) RequestOTP
+[2023/04/04 17:15:08 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 17:15:08 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 17:15:08 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sanbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 17:15:08 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 17:15:08 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 17:16:13 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 17:16:13 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 17:16:13 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sanbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 17:16:13 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 17:16:13 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 17:24:39 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 17:24:39 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 17:24:39 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sanbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 17:24:39 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 17:24:39 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 17:25:47 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 17:25:47 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 17:25:47 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sanbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 17:25:47 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 17:25:47 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 17:28:15 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 17:28:15 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 17:28:15 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sanbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 17:28:15 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 17:28:15 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 17:56:22 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 17:56:22 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 17:56:22 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sanbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 17:56:22 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 17:56:22 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 18:01:37 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 18:01:37 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 18:01:37 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sanbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 18:01:37 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 18:01:37 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 18:07:30 +07] [DEFAULT] [EROR] (eWallet/Banks/MB.DoRequest:223) Do client request error
+[2023/04/04 18:08:04 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 18:08:04 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 18:08:04 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sanbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 18:08:04 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 18:08:04 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 18:08:04 +07] [DEFAULT] [EROR] (eWallet/Banks/MB.DoRequest:223) Do client request error%!(EXTRA string=Post "https://api-sanbox.mbbank.com.vn/ms-ewallet-partner/v1.1/link/request": dial tcp: lookup api-sanbox.mbbank.com.vn: no such host)
+[2023/04/04 18:10:51 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 18:10:51 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 18:10:51 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sandbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 18:10:51 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 18:10:51 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 18:10:53 +07] [DEFAULT] [EROR] (eWallet/Banks/MB.MB.Link:82) Unmarshal response body error: %!(EXTRA string=invalid character ',' looking for beginning of value)
+[2023/04/04 18:14:54 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 18:14:54 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 18:14:54 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sandbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 18:14:54 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 18:14:54 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 18:15:05 +07] [DEFAULT] [EROR] (eWallet/Banks/MB.MB.Link:82) Unmarshal response body error: %!(EXTRA string=invalid character ',' looking for beginning of value)
+[2023/04/04 18:15:20 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 18:15:20 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 18:15:20 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sandbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 18:15:20 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 18:15:20 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link
+[2023/04/04 18:16:02 +07] [DEFAULT] [INFO] (main.main:16) ----------Init logger----------
+[2023/04/04 18:16:02 +07] [DEFAULT] [INFO] (eWallet/Init.InitSCB:34) Init package successfully: %!(EXTRA SCB.Config={http://127.0.0.1:9000 TestUser TestPassword TestSecretKey32Character ./BankConfigs/SCB/PrivateKey.pem ./BankConfigs/SCB/PublicKey.pem})
+[2023/04/04 18:16:02 +07] [DEFAULT] [INFO] (eWallet/Init.InitMB:50) Init package successfully: %!(EXTRA MB.Config={https://api-sandbox.mbbank.com.vn TestUser TestPassword Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ ./BankConfigs/MB/PrivateKey.pem ./BankConfigs/MB/PublicKey.pem OP})
+[2023/04/04 18:16:02 +07] [DEFAULT] [INFO] (main.main:20) ----------Start eWallet----------
+[2023/04/04 18:16:02 +07] [DEFAULT] [INFO] (eWallet/Banks/MB.MB.Link:56) Link

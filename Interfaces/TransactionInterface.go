@@ -1,7 +1,9 @@
 package Interfaces
 
 type TransactionInterface interface {
+	AuthorizationToken(data []byte) ([]byte, error)
 	Link(data []byte) ([]byte, error)
+	LinkConfirm(data []byte) ([]byte, error)
 	RequestOTP(data []byte) ([]byte, error)
 	RequestOTPForLink(data []byte) ([]byte, error)
 	TopupByCard(data []byte) ([]byte, error)
