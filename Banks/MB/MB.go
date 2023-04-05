@@ -22,50 +22,119 @@ import (
 type MB struct{}
 
 type Config struct {
-	Link       string `json:"Link"`
-	User       string `json:"User"`
-	Password   string `json:"Password"`
-	Token      string `json:"Token"`
-	PrivateKey string `json:"PrivateKey"`
-	PublicKey  string `json:"PublicKey"`
-	ChannelID  string `json:"ChannelID"`
+	Link         string `json:"Link"`
+	User         string `json:"User"`
+	Password     string `json:"Password"`
+	PrivateKey   string `json:"PrivateKey"`
+	PublicKey    string `json:"PublicKey"`
+	ChannelID    string `json:"ChannelID"`
+	Token        string `json:"Token"`
+	TimeGetToken int    `json:"TimeGetToken"`
 }
 
 type BodyData interface {
 }
 
 type DataToSign struct {
-	WalletID   string `json:"walletID"`
+	WalletId   string `json:"walletId"`
 	ResourceId string `json:"resourceId"`
 	Mobile     string `json:"mobile"`
 }
 
 var Conf Config
 
-func (r MB) AuthorizationToken(data []byte) ([]byte, error) {
-	log.Info("AuthorizationToken")
+func GetToken() error {
+	log.Info("Get Token")
 	url := Conf.Link + "/oauth2/v1/token"
-	_, err := DoRequestAuthorization(url, nil)
+	// Marshal body data
+	bodyBuf := []byte("grant_type=client_credentials")
+	bodyReader := bytes.NewReader(bodyBuf)
+	req, err := http.NewRequest("POST", url, bodyReader)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return nil, nil
+	// Create header info
+	req.SetBasicAuth(Conf.User, Conf.Password)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	// Send request to server
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	// Parse response data
+	respBodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	var respBodyStruct Response_AuthorizationToken
+	err = json.Unmarshal(respBodyBytes, &respBodyStruct)
+	if err != nil {
+		return err
+	}
+	Conf.Token = respBodyStruct.Access_token
+	log.Info("Get token successfully: ", Conf.Token)
+	return nil
 }
 
 func (r MB) Link(data []byte) ([]byte, error) {
-	log.Info("Link")
-	url := Conf.Link + "/ms-ewallet-partner/v1.1/link/request"
+	url := Conf.Link + "/private/ms-ewallet-partner/v1.1/link/request"
+	log.Info("Link: ", url)
+	// Parse request data
 	var bodyData Request_LINK
-	bodyData.WalletID = "50"
-	bodyData.ActionType = "LINK"
-	bodyData.SourceName = "Nguyen Van A"
-	bodyData.SourceNumber = "9704222065525000"
-	bodyData.SourceType = "CARD"
+	err := json.Unmarshal(data, &bodyData)
+	if err != nil {
+		return nil, err
+	}
+	// Create request to send
+	req, err := CreateRequest(url, bodyData, "LK", RandStringRunes(8))
+	if err != nil {
+		return nil, err
+	}
+	bodyBuf, err := io.ReadAll(req.Body)
+	log.Info("Header: ", req.Header)
+	log.Info("Body: ", string(bodyBuf))
+	// Do request
+	resp, err := DoRequest(req)
+	if err != nil {
+		return nil, err
+	}
+	// Parse response data
+	respBodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	// Unmarshal response
+	var responseBody Response_LINK
+	err = json.Unmarshal(respBodyBytes, &responseBody)
+	if err != nil {
+		return nil, err
+	}
+	log.Info("Link response data: ", responseBody)
+	return respBodyBytes, nil
+}
+
+func (r MB) LinkConfirm(data []byte) ([]byte, error) {
+	log.Info("Link Confirm")
+
+	return nil, nil
+}
+
+func (r MB) CancelLink(data []byte) ([]byte, error) {
+	log.Info("Cancel Link")
+	url := Conf.Link + "/private/ms-ewallet-partner/v1.1/unlink/request"
+	var bodyData Request_UNLINK
+	bodyData.WalletId = "20220712008"
 	bodyData.AuthenType = "SMS"
-	bodyData.Mobile = "0986868686"
-	bodyData.NationalId = "130215307"
-	bodyData.ResourceId = uuid.New().String()
-	resp, err := DoRequest(url, bodyData, "LK", RandStringRunes(8))
+	bodyData.Mobile = "0987208011"
+	req, err := CreateRequest(url, bodyData, "HK", RandStringRunes(8))
+	if err != nil {
+		return nil, err
+	}
+	bodyBuf, err := io.ReadAll(req.Body)
+	log.Info("Header: ", req.Header)
+	log.Info("Body: ", string(bodyBuf))
+	resp, err := DoRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -76,19 +145,18 @@ func (r MB) Link(data []byte) ([]byte, error) {
 		return nil, err
 	}
 	// Unmarshar response
-	var responseBody Response_LINK
+	var responseBody Response_UNLINK
 	err = json.Unmarshal(respBodyBytes, &responseBody)
 	if err != nil {
 		log.Error("Unmarshal response body error: ", err.Error())
 		return nil, err
 	}
-	log.Info("Link response data: ", responseBody)
+	log.Info("UnLink response data: ", responseBody)
 	return nil, nil
 }
 
-func (r MB) LinkConfirm(data []byte) ([]byte, error) {
-	log.Info("LinkConfirm")
-
+func (r MB) CancelLinkConfirm(data []byte) ([]byte, error) {
+	log.Info("Cancel Link Confirm")
 	return nil, nil
 }
 
@@ -137,11 +205,6 @@ func (r MB) TransferToInternalAccount(data []byte) ([]byte, error) {
 	return nil, nil
 }
 
-func (r MB) CancelLink(data []byte) ([]byte, error) {
-	log.Info("CancelLink")
-	return nil, nil
-}
-
 func (r MB) TransferToExternalCard(data []byte) ([]byte, error) {
 	log.Info("TransferToExternalCard")
 	return nil, nil
@@ -187,7 +250,7 @@ func (r MB) PushNotification(data []byte) ([]byte, error) {
 	return nil, nil
 }
 
-func DoRequest(url string, body BodyData, transactionType string, merchantTransactionID string) (*http.Response, error) {
+func CreateRequest(url string, body BodyData, transactionType string, merchantTransactionID string) (*http.Request, error) {
 	// Marshal body data
 	bodyBuf, err := json.Marshal(body)
 	if err != nil {
@@ -199,7 +262,7 @@ func DoRequest(url string, body BodyData, transactionType string, merchantTransa
 		return nil, err
 	}
 	// Create header info
-	req.Header.Set("Authorization", Conf.Token)
+	req.Header.Set("Authorization", "Bearer "+Conf.Token)
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("clientMessageId", uuid.New().String())
 	// Get transactionID: ChannelID + TransactionType + MerchantTransactionID
@@ -215,34 +278,17 @@ func DoRequest(url string, body BodyData, transactionType string, merchantTransa
 	if err != nil {
 		return nil, err
 	}
+	log.Info("Data Sign: ", string(dataSign))
 	req.Header.Set("signature", sSignature)
+	return req, nil
+}
+
+func DoRequest(req *http.Request) (*http.Response, error) {
 	// Send request to server
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Error("Do client request error", err.Error())
-		return nil, err
-	}
-	return resp, err
-}
-
-// For authorization request: Get token
-func DoRequestAuthorization(url string, body BodyData) (*http.Response, error) {
-	// Marshal body data
-	bodyBuf := []byte("grant_type=client_credentials")
-	bodyReader := bytes.NewReader(bodyBuf)
-	req, err := http.NewRequest("POST", url, bodyReader)
-	if err != nil {
-		return nil, err
-	}
-	// Create header info
-	req.SetBasicAuth(Conf.User, Conf.Password)
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	// Send request to server
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Error("Do client request authorization error")
 		return nil, err
 	}
 	return resp, err
@@ -307,7 +353,7 @@ func GetDataToSign(data []byte) ([]byte, error) {
 	}
 	// Get value only of these fields
 	var byteSign []byte
-	byteSign = append(byteSign, []byte(structToSign.WalletID)...)
+	byteSign = append(byteSign, []byte(structToSign.WalletId)...)
 	byteSign = append(byteSign, []byte(structToSign.ResourceId)...)
 	byteSign = append(byteSign, []byte(structToSign.Mobile)...)
 	return byteSign, nil

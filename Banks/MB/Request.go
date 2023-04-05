@@ -5,7 +5,7 @@ type RequestBody interface {
 
 // Request LINK
 type Request_LINK struct {
-	WalletID         string `json:"walletID"`
+	WalletId         string `json:"walletId"`
 	ActionType       string `json:"actionType"`
 	SourceName       string `json:"sourceName"`
 	SourceNumber     string `json:"sourceNumber"`
@@ -23,4 +23,13 @@ type Request_LINK struct {
 	PaymentDetails   string `json:"paymentDetails"`
 	RequestId        string `json:"requestId"`
 	ResourceId       string `json:"resourceId"`
+}
+
+// Request LINK
+type Request_UNLINK struct {
+	WalletId   string `json:"walletId"`
+	ResourceId string `json:"resourceId"`
+	AuthenType string `json:"authenType"`
+	Mobile     string `json:"mobile"`
+	Fee        int64  `json:"fee"`
 }

@@ -47,5 +47,21 @@ func InitMB() {
 		log.Info("Init package failed: ", err.Error())
 		return
 	}
+	// Get token
+	if err := MB.GetToken(); err != nil {
+		log.Info("Get MB token error", err.Error())
+	}
+	ticker := time.NewTicker(time.Duration(MB.Conf.TimeGetToken) * time.Second)
+	done := make(chan bool)
+	go func() {
+		for {
+			select {
+			case <-done:
+				return
+			case <-ticker.C:
+				MB.GetToken()
+			}
+		}
+	}()
 	log.Info("Init package successfully: ", MB.Conf)
 }

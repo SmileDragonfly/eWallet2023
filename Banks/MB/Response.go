@@ -41,8 +41,25 @@ type DataObject struct {
 	TransactionId       string `json:"transactionId"`
 }
 
+// Reponse Authorization Token
+type Response_AuthorizationToken struct {
+	Access_token string `json:"access_token"`
+	Token_type   string `json:"token_type"`
+	Expires_in   int    `json:"expires_in"`
+	Scope        string `json:"scope"`
+	Issued_at    string `json:"issued_at"`
+}
+
 // Reponse LINK
 type Response_LINK struct {
+	ClientMessageId string     `json:"clientMessageId"`
+	ErrorCode       string     `json:"errorCode"`
+	ErrorDesc       []string   `json:"errorDesc"`
+	Data            DataObject `json:"data"`
+}
+
+// Reponse UNLINK
+type Response_UNLINK struct {
 	ClientMessageId string     `json:"clientMessageId"`
 	ErrorCode       string     `json:"errorCode"`
 	ErrorDesc       []string   `json:"errorDesc"`

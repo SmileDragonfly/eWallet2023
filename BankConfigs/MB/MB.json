@@ -1,9 +1,9 @@
 {
   "Link": "https://api-sandbox.mbbank.com.vn",
-  "User": "TestUser",
-  "Password": "TestPassword",
-  "Token": "Bearer Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E8kBQFb4lzyW9mIWJ",
+  "User": "Pd4mY5AFLqmHyG9RbfJ2GYqYsYI1iZ0E",
+  "Password": "8kBQFb4lzyW9mIWJ",
   "PrivateKey": "./BankConfigs/MB/PrivateKey.pem",
   "PublicKey": "./BankConfigs/MB/PublicKey.pem",
-  "ChannelID": "OP"
+  "ChannelID": "OP",
+  "TimeGetToken": 300
 }

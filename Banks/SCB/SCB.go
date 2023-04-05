@@ -54,6 +54,16 @@ func (r SCB) LinkConfirm(data []byte) ([]byte, error) {
 	return nil, nil
 }
 
+func (r SCB) CancelLink(data []byte) ([]byte, error) {
+	log.Info("CancelLink")
+	return nil, nil
+}
+
+func (r SCB) CancelLinkConfirm(data []byte) ([]byte, error) {
+	log.Info("CancelLinkConfirm")
+	return nil, nil
+}
+
 func (r SCB) RequestOTP(data []byte) ([]byte, error) {
 	log.Info("RequestOTP")
 	url := Conf.Link + "/RequestOTPAcc"
@@ -137,11 +147,6 @@ func (r SCB) TransferToInternalCard(data []byte) ([]byte, error) {
 
 func (r SCB) TransferToInternalAccount(data []byte) ([]byte, error) {
 	log.Info("TransferToInternalAccount")
-	return nil, nil
-}
-
-func (r SCB) CancelLink(data []byte) ([]byte, error) {
-	log.Info("CancelLink")
 	return nil, nil
 }
 
